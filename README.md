@@ -1,46 +1,124 @@
-# Getting Started with Create React App
+## API Saved from browser
+### Get stock data from Lidl
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<strong>url:</strong>
 
-## Available Scripts
+`https://www.lidl.pl/p/api/storestock/PL/pl/ITEM_ID?storeids=STORE_ID,STORE_ID,...`
 
-In the project directory, you can run:
+where `ITEM_ID` is the product id and `STORE_ID` is the store id.
 
-### `npm start`
+<strong>Example:</strong>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+`https://www.lidl.pl/p/api/storestock/PL/pl/100375575?storeids=1628,1534,1629,1819,1655,1332,1482,1095,2138,1671,1373,1464`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+response is a json object with stock data.
 
-### `npm test`
+```json
+[
+    {
+        "storeAvailabilityIndicator": "LOW_STOCK",
+        "lastUpdatedDate": 1718880300,
+        "storeId": "1464"
+    },
+    {
+        "storeAvailabilityIndicator": "AVAILABLE",
+        "lastUpdatedDate": 1718886060,
+        "storeId": "2138"
+    },
+  ...
+]
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Get stores data
 
-### `npm run build`
+Lidl stores data can be obtained using microsoft's spatial data service. [Docs link](https://learn.microsoft.com/en-us/bingmaps/spatial-data-services/query-api/query-by-area#url-template)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<strong>url:</strong>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+`http://spatial.virtualearth.net/REST/v1/data/accessId/dataSourceName/entityTypeName?spatialFilter=nearby(latitude,longitude,distance)&queryoption1&queryoption2&queryoptionN&jsonp=jsonCallBackFunction&jsonso=jsonState&isStaging=isStaging&key=queryKey`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+where `latitude` and `longitude` are the coordinates of the center of the area, `distance` is the radius of the area, `queryKey` is the key.
 
-### `npm run eject`
+<strong>Example:</strong>
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+`https://spatial.virtualearth.net/REST/v1/data/f4c8c3e0d96748348fe904413a798be3/Filialdaten-PL/Filialdaten-PL?$select=*,__Distance&$filter=Adresstyp%20eq%201&key=AnZ7UrM33kcHeNxFJsJ6McC4-iAx6Mv55FfsAzmlImV6eJ1n6OX4zfhe2rsut6CD&$format=json&jsonp=Microsoft_Maps_Network_QueryAPI_2&spatialFilter=nearby(51.2506,22.5701,5.382351000000001)`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+response is a json object with stores data.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```json
+Microsoft_Maps_Network_QueryAPI_2({
+    "d": {
+        "__copyright": "\u00a9 2024 Microsoft and its suppliers.  This API and any results cannot be used or accessed without Microsoft's express written permission.",
+        "results": [
+            {
+                "__metadata": {
+                    "uri": "https:\/\/spatial.virtualearth.net\/REST\/v1\/data\/f4c8c3e0d96748348fe904413a798be3\/Filialdaten-PL\/Filialdaten-PL('1628')"
+                },
+                "EntityID": "1628",
+                "CountryRegion": "PL",
+                "PostalCode": "20-119",
+                "Locality": "Lublin",
+                "AddressLine": "ul. Bia\u0142kowska G\u00f3ra 3",
+                "OpeningTimes": "po 06:00-22:00<br>wt 06:00-22:00<br>\u015br 06:00-22:00<br>cz 06:00-22:00<br>pi 06:00-22:00<br>so 06:00-22:00<br><br>30.06. 08:00-20:00<br><br>Dotyczy tylko niedziel handlowych",
+                "Longitude": 22.581180,
+                "Latitude": 51.250830,
+                "AR": 13,
+                "NF": true,
+                "ShownPostalCode": "20-119",
+                "ShownLocality": "Lublin",
+                "ShownAddressLine": "ul. Bia\u0142kowska G\u00f3ra 3",
+                "ShownStoreName": "Lublin, ul. Bia\u0142kowska G\u00f3ra 3",
+                "CityDistrict": "",
+                "Bilanzgesellschaft": 13,
+                "OverlayOperatorData": "Lidl sp. z o.o. sp. k. \u2022 <br\/>ul. Pozna\u0144ska 48, Jankowice \u2022 <br\/>62-080 Tarnowo Podg\u00f3rne",
+                "Adresstyp": 1,
+                "Holidays": "",
+                "AccountTypeId": "285540000",
+                "INFOICON1": "disParking",
+                "INFOICON2": "bake",
+                "INFOICON3": "",
+                "INFOICON4": "parking",
+                ...
+                "INFOICON10": "lidlPlus",
+                ...
+                "__Distance": 0.772438702602492
+            },
+            {
+                "__metadata": {
+                    "uri": "https:\/\/spatial.virtualearth.net\/REST\/v1\/data\/f4c8c3e0d96748348fe904413a798be3\/Filialdaten-PL\/Filialdaten-PL('1534')"
+                },
+                "EntityID": "1534",
+                "CountryRegion": "PL",
+                "PostalCode": "20-128",
+                "Locality": "Lublin",
+                "AddressLine": "ul. Lwowska 48",
+                "OpeningTimes": "po 06:00-22:00<br>wt 06:00-22:00<br>\u015br 06:00-22:00<br>cz 06:00-22:00<br>pi 06:00-22:00<br>so 06:00-22:00<br><br>30.06. 08:00-20:00<br><br>Dotyczy tylko niedziel handlowych",
+                "Longitude": 22.583230,
+                "Latitude": 51.257130,
+                "AR": 10,
+                "NF": true,
+                "ShownPostalCode": "20-128",
+                "ShownLocality": "Lublin",
+                "ShownAddressLine": "ul. Lwowska 48",
+                "ShownStoreName": "Lublin, ul. Lwowska 48",
+                "CityDistrict": "",
+                "Bilanzgesellschaft": 13,
+                "OverlayOperatorData": "Lidl sp. z o.o. sp. k. \u2022 <br\/>ul. Pozna\u0144ska 48, Jankowice \u2022 <br\/>62-080 Tarnowo Podg\u00f3rne",
+                "Adresstyp": 1,
+                "Holidays": "",
+                "AccountTypeId": "285540000",
+                "INFOICON1": "disParking",
+                "INFOICON2": "bake",
+                "INFOICON3": "",
+                "INFOICON4": "parking",
+                ...
+                "INFOICON10": "lidlPlus",
+                ...
+                "__Distance": 1.16843669335704
+            },
+            ...
+        ]
+    }
+})
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
